@@ -11,20 +11,36 @@ import os
 
 def gaze_fix(filename, outputname) :
 	#create a csv writer that will write to a file with our output name
-	#w = csv.writer(open(outputname,'wb'), delimiter=',')
+	w = csv.writer(open(outputname,'wb'), delimiter=',')
 	#create a reader to read from our csv file
-	#reader = csv.reader(open(filename, 'rU'), delimiter = ',')
+	reader = csv.reader(open(filename, 'rU'), delimiter = ',')
 
 	p = re.compile('exp_data')
+
+	currline = reader.__next__()
+
+	imgindex = currline.index('imgfile')
+
+	currline = reader.__next__()
 
 	for dirname in os.listdir("../experiment files/participants") :
 		directory = os.path.join('../experiment files/participants', dirname)
 		if os.path.isdir(directory) :
 			for file in os.listdir(directory) :
 				if p.search(file) :
-					print('uguu')
 					#create a reader to read from our csv file
-					#reader = csv.reader(open(filename, 'rU'), delimiter = ',')
+					logreader = open(os.path.join(directory, file), 'rU')
+					currlogline = logreader.readline().split('\t')
+					logimgindex = currlogline.index('stim_file_name')
+					for line in logreader:
+						try:
+							currlogline = line.split('\t')
+							while currline[imgindex][:-3] == currlogline[logimgindex][:-3] :
+								print('uguu')
+								currline = reader.__next__()
+						except Exception as e:
+							pass
+
 
 	# #create a reader to read from our log file
 	# reader2 = csv.reader(open(filename, 'rU'), delimiter - ',')
@@ -63,4 +79,4 @@ def gaze_fix(filename, outputname) :
 	# 		lastline = line
 	#
 #here's the actual method call
-gaze_fix("fixation_s01-s19-3.csv", "results.csv")
+gaze_fix("results.csv", "combinedlog.csv")
