@@ -10,34 +10,55 @@ import re
 import os
 
 def gaze_fix(filename, outputname) :
+
 	#create a csv writer that will write to a file with our output name
-	w = csv.writer(open(outputname,'wb'), delimiter=',')
+	w = csv.writer(open(outputname,'w', newline=''), delimiter=',')
+
 	#create a reader to read from our csv file
 	reader = csv.reader(open(filename, 'rU'), delimiter = ',')
 
+	#we'll be looking for exp data files so we compile this
 	p = re.compile('exp_data')
 
+	#get the first line in the csv file
 	currline = reader.__next__()
 
+	#get the index of the image file field in the csv file
 	imgindex = currline.index('imgfile')
 
+	#get the first line of actual data from the csv file
 	currline = reader.__next__()
 
+	#go through the participants folder
 	for dirname in os.listdir("../experiment files/participants") :
+		#join the directory name to the rest of the path
 		directory = os.path.join('../experiment files/participants', dirname)
+		#we don't want to try to navigate through something in the participants folder that isn't a dir
 		if os.path.isdir(directory) :
+			#for every participants folder, we look for the exp data file
 			for file in os.listdir(directory) :
+				#if the file is the exp data file
 				if p.search(file) :
-					#create a reader to read from our csv file
+					#create a reader to read from our exp data file
 					logreader = open(os.path.join(directory, file), 'rU')
+					#splitting the current line by tabs
 					currlogline = logreader.readline().split('\t')
+
+					#finding indeces of all the good stuff that we want
 					logimgindex = currlogline.index('stim_file_name')
-					for line in logreader:
+					biasedindex = currlogline.index('biased')
+					onsetindex = currlogline.index('response time')
+
+					#go through the exp data file
+					for line in logreader :
+						currlogline = line.split('\t')
+						#if the image files match, minus the extensions
 						try:
-							currlogline = line.split('\t')
 							while currline[imgindex][:-3] == currlogline[logimgindex][:-3] :
-								print('uguu')
+								newline = currline + [currlogline[biasedindex], currlogline[onsetindex]]
+								w.writerow(newline)
 								currline = reader.__next__()
+						#have to catch reader's stopiteration exception
 						except Exception as e:
 							pass
 
