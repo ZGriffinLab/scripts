@@ -22,10 +22,9 @@ def gaze_fix(filename, outputname) :
 
 	#get the first line in the csv file
 	currline = reader.__next__()
-
 	#get the index of the image file field in the csv file
 	imgindex = currline.index('imgfile')
-
+	labelindex = currline.index('CURRENT_FIX_INTEREST_AREA_LABEL')
 	#get the first line of actual data from the csv file
 	currline = reader.__next__()
 
@@ -49,15 +48,24 @@ def gaze_fix(filename, outputname) :
 					biasedindex = currlogline.index('biased')
 					onsetindex = currlogline.index('response time')
 
+					w.writerow(currlogline[:-2] + ['biased','speech onset', 'forward order'])
+
+					currlogline = logreader.readline().split('\t')
+
 					#go through the exp data file
 					for line in logreader :
+						lastlogline = currlogline
 						currlogline = line.split('\t')
 						#if the image files match, minus the extensions
 						try:
-							while currline[imgindex][:-3] == currlogline[logimgindex][:-3] :
-								newline = currline + [currlogline[biasedindex], currlogline[onsetindex]]
-								w.writerow(newline)
+							while currline[imgindex][:-3] == lastlogline[logimgindex][:-3] :
+								lastline = currline
 								currline = reader.__next__()
+								forwardorder = 0
+								if (lastline[labelindex] == 'patient' and currline[labelindex] == 'recipient') or (lastline[labelindex] == 'recipient' and currline[labelindex] == 'patient') :
+									forwardorder = 1
+								newline = lastline[:-1] + [lastlogline[biasedindex], lastlogline[onsetindex], forwardorder]
+								w.writerow(newline)
 						#have to catch reader's stopiteration exception
 						except Exception as e:
 							pass
