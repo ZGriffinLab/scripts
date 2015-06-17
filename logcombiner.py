@@ -9,7 +9,7 @@ import csv
 import re
 import os
 
-def gaze_fix(filename, outputname) :
+def logcombner(filename, outputname) :
 
 	#create a csv writer that will write to a file with our output name
 	w = csv.writer(open(outputname,'w', newline=''), delimiter=',')
@@ -71,4 +71,4 @@ def gaze_fix(filename, outputname) :
 							pass
 
 #here's the actual method call
-gaze_fix("results.csv", "combinedlog.csv")
+logcombiner("results.csv", "combinedlog.csv")
