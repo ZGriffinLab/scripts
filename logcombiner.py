@@ -9,7 +9,7 @@ import csv
 import re
 import os
 
-def logcombner(filename, outputname) :
+def logcombiner(filename, outputname) :
 
 	#create a csv writer that will write to a file with our output name
 	w = csv.writer(open(outputname,'w', newline=''), delimiter=',')
