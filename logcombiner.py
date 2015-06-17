@@ -71,4 +71,5 @@ def logcombiner(filename, outputname) :
 							pass
 
 #here's the actual method call
-logcombiner("results.csv", "combinedlog.csv")
+if __name__ == '__main__':
+	logcombiner("results.csv", "combinedlog.csv")

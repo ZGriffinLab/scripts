@@ -47,4 +47,5 @@ def gaze_fix_v2(filename, outputname) :
 		lastline = line
 
 #here's the actual method call
-gaze_fix_v2("fixation_s01-s19-3.csv", "results.csv")
+if __name__ == '__main__':
+	gaze_fix_v2("fixation_s01-s19-3.csv", "results.csv")

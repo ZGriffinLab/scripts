@@ -37,7 +37,7 @@ def gaze_fix(filename, outputname) :
 					gaze_start = 0
 			else:
 				#if the interest area has changed
-				if line[4] != lastline[4] and lastline != firstline: 
+				if line[4] != lastline[4] and lastline != firstline:
 					total = int(lastline[8]) - int(gaze_start)
 					#this is where we change the non-IA stuff to "other"
 					if(lastline[4] == '.') :
@@ -49,6 +49,5 @@ def gaze_fix(filename, outputname) :
 			lastline = line
 
 #here's the actual method call
-gaze_fix("fixation_s01-s19-3.csv", "results.csv")
-
-#crucial and consistent variables: trial index, fixation area label,fixation start and fixation end
+if __name__ == '__main__':
+	gaze_fix("fixation_s01-s19-3.csv", "results.csv")

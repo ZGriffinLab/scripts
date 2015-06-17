@@ -13,7 +13,7 @@ def loganalyzer(filename, outputname) :
 	w = csv.writer(open(outputname,'wb'), delimiter=',')
 	#create a reader to read from our csv file
 	reader = csv.reader(open(filename, 'rU'), delimiter = ',')
-	
+
 	#grab first line and all of our indeces
 	firstline_index= reader.next()
 	transition_index = firstline.index('forward order')
@@ -30,4 +30,5 @@ def loganalyzer(filename, outputname) :
 		lastline = line
 
 #here's the actual method call
-loganalyzer("combinedlog.csv", "analyzedlog.csv")
+if __name__ == '__main__':
+	loganalyzer("combinedlog.csv", "analyzedlog.csv")
