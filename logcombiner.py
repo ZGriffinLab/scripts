@@ -54,7 +54,8 @@ def logcombiner(filename, outputname) :
                         w.writerow(currlogline[:-2] + ['biased','speech onset', 'forward order'])
                         first = 0
                     else :
-                        currline = reader.__next__()
+                        while currline[imgindex][:-3] != lastlogline[logimgindex][:-3] :
+                            currline = reader.__next__()
 
                     currlogline = logreader.readline().split('\t')
 
@@ -68,7 +69,7 @@ def logcombiner(filename, outputname) :
                             while currline[imgindex][:-3] == lastlogline[logimgindex][:-3] :
                                 lastline = currline
                                 currline = reader.__next__()
-                                print(currline)
+                                #print(currline)
                                 forwardorder = 0
                                 if (lastline[labelindex] == 'patient' and currline[labelindex] == 'recipient') or (lastline[labelindex] == 'recipient' and currline[labelindex] == 'patient') :
                                     forwardorder = 1
@@ -77,7 +78,6 @@ def logcombiner(filename, outputname) :
                                 else:
                                     newline = lastline[:-1] + [lastlogline[biasedindex], lastlogline[onsetindex], forwardorder]
                                     w.writerow(newline)
-                            currline = reader.__next__()
                         #have to catch reader's stopiteration exception
                         except Exception as e:
                             pass
