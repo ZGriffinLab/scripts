@@ -63,17 +63,22 @@ def logcombiner(filename, outputname) :
                         lastlogline = currlogline
                         currlogline = line.split('\t')
                         print(currline)
-                        #if the image files match, minus the extensions
+                        #if the image files match minus the extensions
                         try:
                             while currline[imgindex][:-3] == lastlogline[logimgindex][:-3] :
                                 lastline = currline
                                 currline = reader.__next__()
+                                print(currline)
                                 forwardorder = 0
                                 if (lastline[labelindex] == 'patient' and currline[labelindex] == 'recipient') or (lastline[labelindex] == 'recipient' and currline[labelindex] == 'patient') :
                                     forwardorder = 1
                                     newline = lastline[:-1] + [lastlogline[biasedindex], lastlogline[onsetindex], forwardorder]
                                     w.writerow(newline)
-                                    #have to catch reader's stopiteration exception
+                                else:
+                                    newline = lastline[:-1] + [lastlogline[biasedindex], lastlogline[onsetindex], forwardorder]
+                                    w.writerow(newline)
+                            currline = reader.__next__()
+                        #have to catch reader's stopiteration exception
                         except Exception as e:
                             pass
 
