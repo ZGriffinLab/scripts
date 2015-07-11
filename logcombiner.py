@@ -58,14 +58,15 @@ def logcombiner(filename, outputname) :
                     for line in logreader :
                         currlogline = line.split('\t')
                         #if the image files match minus the extensions
-                        try:
-                            while currline[imgindex][:-3] == currlogline[logimgindex][:-3] :
-                                newline = currline[:-1] + [currlogline[biasedindex], currlogline[onsetindex]]
-                                w.writerow(newline)
+                        while currline[imgindex][:-3] == currlogline[logimgindex][:-3] :
+                            newline = currline[:-1] + [currlogline[biasedindex], currlogline[onsetindex]]
+                            w.writerow(newline)
+                            try:
                                 currline = reader.__next__()
-                        #have to catch reader's stopiteration exception
-                        except Exception as e:
-                            pass
+                            #have to catch reader's stopiteration exception
+                            except Exception as e:
+                                #changes the img name to end to break us out of the while loop
+                                currline[imgindex] = "end"
 
 #here's the actual method call
 if __name__ == '__main__':
