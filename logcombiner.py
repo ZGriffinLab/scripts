@@ -52,7 +52,7 @@ def logcombiner(filename, outputname) :
                     onsetindex = currlogline.index('response time')
 
                     if first :
-                        w.writerow(firstline[:-2] + ['biased','speech onset'])
+                        w.writerow(firstline[:-1] + ['biased','speech onset'])
                         first = 0
 
                     #go through the exp data file
