@@ -7,7 +7,6 @@
 
 import csv
 import re
-import os
 
 def forwardorder(filename, outputname) :
 
