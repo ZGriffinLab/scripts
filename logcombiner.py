@@ -26,6 +26,7 @@ def logcombiner(filename, outputname) :
     imgindex = currline.index('imgfile')
     labelindex = currline.index('CURRENT_FIX_INTEREST_AREA_LABEL')
     #get the first line of actual data from the csv file
+    firstline = currline
     currline = reader.__next__()
 
     first = 1
@@ -51,7 +52,7 @@ def logcombiner(filename, outputname) :
                     onsetindex = currlogline.index('response time')
 
                     if first :
-                        w.writerow(currlogline[:-2] + ['biased','speech onset'])
+                        w.writerow(firstline[:-2] + ['biased','speech onset'])
                         first = 0
 
                     #go through the exp data file
