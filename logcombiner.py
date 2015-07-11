@@ -51,33 +51,18 @@ def logcombiner(filename, outputname) :
                     onsetindex = currlogline.index('response time')
 
                     if first :
-                        w.writerow(currlogline[:-2] + ['biased','speech onset', 'forward order'])
+                        w.writerow(currlogline[:-2] + ['biased','speech onset'])
                         first = 0
-                    else :
-                        while currline[imgindex][:-3] != lastlogline[logimgindex][:-3] :
-                            currline = reader.__next__()
-
-                    currlogline = logreader.readline().split('\t')
 
                     #go through the exp data file
                     for line in logreader :
-                        lastlogline = currlogline
                         currlogline = line.split('\t')
-                        print(currline)
                         #if the image files match minus the extensions
                         try:
-                            while currline[imgindex][:-3] == lastlogline[logimgindex][:-3] :
-                                lastline = currline
+                            while currline[imgindex][:-3] == currlogline[logimgindex][:-3] :
+                                newline = currline[:-1] + [currlogline[biasedindex], currlogline[onsetindex]]
+                                w.writerow(newline)
                                 currline = reader.__next__()
-                                #print(currline)
-                                forwardorder = 0
-                                if (lastline[labelindex] == 'patient' and currline[labelindex] == 'recipient') or (lastline[labelindex] == 'recipient' and currline[labelindex] == 'patient') :
-                                    forwardorder = 1
-                                    newline = lastline[:-1] + [lastlogline[biasedindex], lastlogline[onsetindex], forwardorder]
-                                    w.writerow(newline)
-                                else:
-                                    newline = lastline[:-1] + [lastlogline[biasedindex], lastlogline[onsetindex], forwardorder]
-                                    w.writerow(newline)
                         #have to catch reader's stopiteration exception
                         except Exception as e:
                             pass
