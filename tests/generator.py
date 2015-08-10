@@ -10,6 +10,7 @@ import random
 
 def gentest(num) :
     gazefix = open("gazefix" + str(num) + ".csv", 'w')
+    gazefixed = open("gazefixed" + str(num) + ".csv", 'w')
     loganalyzer = open("loganalyzer" + str(num) + ".csv", 'w')
     forwardorder = open("forwardorder" + str(num) + ".csv", 'w')
     logcombiner = open("logcombinertest" + str(num) + ".csv", 'w')
@@ -17,10 +18,13 @@ def gentest(num) :
     # gfwriter = csv.writer(gazefix)
     # gfwriter.writerow(firstline)
     template = csv.reader(open("template.csv", 'r'))
-    rand = random.randint(800000, 850000)
+    rand1 = 0
+    rand2 = rand1 + random.randint(200, 500)
     #using the original csv file as a template for data i'm not calculating
     for line in template :
-        csv.writer(gazefix).writerow(line[:-8])
+        csv.writer(gazefix).writerow(line[:-8] + [rand1, rand2, 1, rand2-rand1, 1, 1, "RIGHT"])
+        rand1 = rand2
+        rand2 = rand1 + random.randint(200,500)
 
 
 
